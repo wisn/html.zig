@@ -38,7 +38,7 @@ pub const AttributeNameValidator = struct {
             is_illegal = is_illegal or codepoint == 1114110 or codepoint == 1114111; // U+10FFFE, U+10FFFF
 
             if (is_illegal) {
-                @compileError("InvalidAttributeName: contains illegal character");
+                @compileError("InvalidAttributeName: \"" ++ name ++ "\" contains illegal character");
             }
         }
     }
