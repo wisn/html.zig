@@ -19,13 +19,13 @@ const AttributeBuilder = struct {
             fn build_name(name: []const u8) AttributeValueFn {
                 AttributeNameValidator.validate(name);
                 const value_builder = struct {
-                    fn build_value(value: ?[]const u8) RenderFn {
-                        AttributeValueValidator.validate(value);
+                    fn build_value(optional_value: ?[]const u8) RenderFn {
+                        AttributeValueValidator.validate(optional_value);
                         const renderer = struct {
                             fn render(options: RenderOptions) []const u8 {
                                 _ = options;
-                                if (value) |attrValue| {
-                                    return name ++ "=\"" ++ attrValue ++ "\"";
+                                if (optional_value) |value| {
+                                    return name ++ "=\"" ++ value ++ "\"";
                                 }
                                 return name;
                             }
