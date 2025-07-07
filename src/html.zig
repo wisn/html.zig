@@ -1,1 +1,3 @@
-pub const Attribute = @import("base").Attribute;
+pub const composer = @import("composer");
+
+pub const Attribute = composer.Attribute;

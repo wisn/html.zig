@@ -15,6 +15,12 @@ pub fn build(b: *std.Build) void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
+    const base_module = b.addModule("base", .{
+        .root_source_file = b.path("src/base/root.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+
     const constant_module = b.addModule("constant", .{
         .root_source_file = b.path("src/constant/root.zig"),
         .target = target,
@@ -30,11 +36,12 @@ pub fn build(b: *std.Build) void {
         },
     });
 
-    const base_module = b.addModule("base", .{
-        .root_source_file = b.path("src/base/root.zig"),
+    const composer_module = b.addModule("composer", .{
+        .root_source_file = b.path("src/composer/root.zig"),
         .target = target,
         .optimize = optimize,
         .imports = &.{
+            .{ .name = "base", .module = base_module },
             .{ .name = "validator", .module = validator_module },
         },
     });
@@ -51,9 +58,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
         .imports = &.{
-            .{ .name = "constant", .module = constant_module },
-            .{ .name = "base", .module = base_module },
-            .{ .name = "validator", .module = validator_module },
+            .{ .name = "composer", .module = composer_module },
         },
     });
 

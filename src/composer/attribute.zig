@@ -1,6 +1,7 @@
 const std = @import("std");
-const RenderFn = @import("renderer.zig").RenderFn;
-const RenderOptions = @import("renderer.zig").RenderOptions;
+const ComposeOption = @import("base").composer.ComposeOption;
+const RenderFn = @import("base").renderer.RenderFn;
+const RenderOptions = @import("base").renderer.RenderOptions;
 const AttributeNameValidator = @import("validator").attribute.AttributeNameValidator;
 const AttributeValueValidator = @import("validator").attribute.AttributeValueValidator;
 
@@ -11,19 +12,20 @@ const AttributeFn = AttributeNameFn;
 const AttributeNameFn = fn ([]const u8) AttributeValueFn;
 const AttributeValueFn = fn (?[]const u8) RenderFn;
 
-pub const Attribute = AttributeBuilder.build();
+pub const Attribute = AttributeComposer.compose(.{});
 
-const AttributeBuilder = struct {
-    fn build() AttributeFn {
-        const name_builder = struct {
-            fn build_name(name: []const u8) AttributeValueFn {
+const AttributeComposer = struct {
+    fn compose(compose_option: ComposeOption) AttributeFn {
+        _ = compose_option;
+        const name_composer = struct {
+            fn compose_name(name: []const u8) AttributeValueFn {
                 AttributeNameValidator.validate(name);
-                const value_builder = struct {
-                    fn build_value(optional_value: ?[]const u8) RenderFn {
+                const value_composer = struct {
+                    fn compose_value(optional_value: ?[]const u8) RenderFn {
                         AttributeValueValidator.validate(optional_value);
                         const renderer = struct {
-                            fn render(options: RenderOptions) []const u8 {
-                                _ = options;
+                            fn render(render_options: RenderOptions) []const u8 {
+                                _ = render_options;
                                 if (optional_value) |value| {
                                     return name ++ "=\"" ++ value ++ "\"";
                                 }
@@ -33,9 +35,9 @@ const AttributeBuilder = struct {
                         return renderer.render;
                     }
                 };
-                return value_builder.build_value;
+                return value_composer.compose_value;
             }
         };
-        return name_builder.build_name;
+        return name_composer.compose_name;
     }
 };

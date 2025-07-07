@@ -1,3 +1,3 @@
 comptime {
-    _ = @import("base/attribute.zig");
+    _ = @import("composer/root.zig");
 }
