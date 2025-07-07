@@ -51,10 +51,10 @@ pub const AttributeValueValidator = struct {
             var left: usize = 0;
             const length = value.len;
             // the default max backward branches is 1000
-            // for the static string map that we use (the `NAMED_CHARACTERS` constant), the max backward branches formula it is 10*N*log2(N)
-            // since the attribute value need to be factored as well, we use M*10*N*log2(N) formula where M is the length of the attribute value
-            // is it worth the sacrifice? may be answered later
-            const max_branches = value.len * 10 * NAMED_CHARACTERS.kvs.len * std.math.log2_int_ceil(usize, NAMED_CHARACTERS.kvs.len);
+            // for the static string map that we use (the `NAMED_CHARACTERS` constant), the max backward branches formula it is N*log2(N)
+            // since the attribute value need to be factored as well, we use M*N*log2(N) formula where M is the length of the attribute value
+            // is this a good thing? we may got the answer later
+            const max_branches = value.len * NAMED_CHARACTERS.kvs.len * std.math.log2_int_ceil(usize, NAMED_CHARACTERS.kvs.len);
             @setEvalBranchQuota(max_branches);
 
             while (left < length) : (left += 1) {
