@@ -19,31 +19,7 @@ pub fn build(b: *std.Build) void {
         .root_source_file = b.path("src/base/root.zig"),
         .target = target,
         .optimize = optimize,
-    });
-
-    const constant_module = b.addModule("constant", .{
-        .root_source_file = b.path("src/constant/root.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
-
-    const validator_module = b.addModule("validator", .{
-        .root_source_file = b.path("src/validator/root.zig"),
-        .target = target,
-        .optimize = optimize,
-        .imports = &.{
-            .{ .name = "constant", .module = constant_module },
-        },
-    });
-
-    const composer_module = b.addModule("composer", .{
-        .root_source_file = b.path("src/composer/root.zig"),
-        .target = target,
-        .optimize = optimize,
-        .imports = &.{
-            .{ .name = "base", .module = base_module },
-            .{ .name = "validator", .module = validator_module },
-        },
+        .imports = &.{},
     });
 
     // This creates a "module", which represents a collection of source files alongside
@@ -58,7 +34,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
         .imports = &.{
-            .{ .name = "composer", .module = composer_module },
+            .{ .name = "base", .module = base_module },
         },
     });
 

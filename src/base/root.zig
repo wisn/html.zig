@@ -1,3 +1,5 @@
-pub const composer = @import("composer.zig");
+const attribute = @import("attribute.zig");
 
-pub const renderer = @import("renderer.zig");
+pub const Attribute = attribute.Attribute;
+pub const DataAttribute = attribute.DataAttribute;
+pub const InteractiveAttribute = attribute.InteractiveAttribute;
