@@ -1,1 +1,3 @@
-comptime {}
+comptime {
+    _ = @import("base/root.zig");
+}

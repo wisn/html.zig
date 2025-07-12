@@ -1,6 +1,6 @@
 const std = @import("std");
 
-pub const CONTROL_CODEPOINTS = [_]u21{
+pub const CONTROL_CODEPOINTS = &[_]u21{
     0x0000,
     0x0001,
     0x0002,
@@ -68,7 +68,7 @@ pub const CONTROL_CODEPOINTS = [_]u21{
     0xC29F,
 };
 
-pub const NONCHARACTER_CODEPOINTS = [_]u21{
+pub const NONCHARACTER_CODEPOINTS = &[_]u21{
     0x00EFB790,
     0x00EFB791,
     0x00EFB792,
