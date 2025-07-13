@@ -6,6 +6,30 @@ Build a standard-compliant HTML in Zig!
 > This project is not yet stable. The provided APIs may change in the future.
 > Production usage is not encouraged at the moment.
 
+## Motivation
+
+I'm planning to build a product written fully in Zig.
+
+One of the things that I need to do is to create a website for it.
+
+Meaning that I need to work with HTML.
+
+While I'm at it, I want to write a standard-compliant HTML.
+
+What if I write the HTML part in Zig too?
+
+What if I force myself to write a standard-compliant HTML?
+
+How to enforce it?
+
+Well, if what I write does not follow the standard, then it will result in a compile error.
+
+Let's leverage the comptime feature of Zig!
+
+## Usage
+
+TBA.
+
 ## Roadmap
 
 <details>
