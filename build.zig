@@ -16,14 +16,14 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const internal_module = b.addModule("internal", .{
-        .root_source_file = b.path("src/internal/root.zig"),
+        .root_source_file = b.path("src/html/internal/root.zig"),
         .target = target,
         .optimize = optimize,
         .imports = &.{},
     });
 
     const base_module = b.addModule("base", .{
-        .root_source_file = b.path("src/base/root.zig"),
+        .root_source_file = b.path("src/html/base/root.zig"),
         .target = target,
         .optimize = optimize,
         .imports = &.{
@@ -32,7 +32,7 @@ pub fn build(b: *std.Build) void {
     });
 
     const element_module = b.addModule("element", .{
-        .root_source_file = b.path("src/element/root.zig"),
+        .root_source_file = b.path("src/html/element/root.zig"),
         .target = target,
         .optimize = optimize,
         .imports = &.{
@@ -49,7 +49,7 @@ pub fn build(b: *std.Build) void {
         // only contains e.g. external object files, you can make this `null`.
         // In this case the main source file is merely a path, however, in more
         // complicated build scripts, this could be a generated file.
-        .root_source_file = b.path("src/html.zig"),
+        .root_source_file = b.path("src/html/root.zig"),
         .target = target,
         .optimize = optimize,
         .imports = &.{
