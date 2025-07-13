@@ -1,0 +1,19 @@
+name: CI
+run-name: running continuous integration for ${{ github.sha }} by @${{ github.actor }}
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: build and test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: mlugg/setup-zig@v2
+        with:
+          version: 0.14.1
+      - run: zig build test
