@@ -1,6 +1,6 @@
+const constant = @import("constant.zig");
 const std = @import("std");
 const unicode = std.unicode;
-const constant = @import("constant.zig");
 const util = @import("util.zig");
 
 pub const Attribute = struct {
@@ -111,6 +111,26 @@ pub const Element = struct {
 
             if (entity.?.name != .Element) {
                 @compileError(error_message);
+            }
+        }
+    }
+
+    pub fn validate_arguments(args: anytype, comptime has_attributes: *bool) void {
+        const fields = std.meta.fields(@TypeOf(args));
+        if (fields.len > 0) {
+            const entity = util.fetch_entity(@field(args, fields[0].name));
+
+            if (entity == null) {
+                @compileError("InvalidElementConstruct: unknown argument");
+            }
+
+            if (entity.?.name == .Attribute) {
+                Element.validate_attributes(args);
+            }
+
+            if (entity.?.name == .Element) {
+                Element.validate_elements(args);
+                has_attributes.* = false;
             }
         }
     }

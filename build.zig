@@ -15,11 +15,30 @@ pub fn build(b: *std.Build) void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
+    const internal_module = b.addModule("internal", .{
+        .root_source_file = b.path("src/internal/root.zig"),
+        .target = target,
+        .optimize = optimize,
+        .imports = &.{},
+    });
+
     const base_module = b.addModule("base", .{
         .root_source_file = b.path("src/base/root.zig"),
         .target = target,
         .optimize = optimize,
-        .imports = &.{},
+        .imports = &.{
+            .{ .name = "internal", .module = internal_module },
+        },
+    });
+
+    const element_module = b.addModule("element", .{
+        .root_source_file = b.path("src/element/root.zig"),
+        .target = target,
+        .optimize = optimize,
+        .imports = &.{
+            .{ .name = "internal", .module = internal_module },
+            .{ .name = "base", .module = base_module },
+        },
     });
 
     // This creates a "module", which represents a collection of source files alongside
@@ -35,6 +54,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
         .imports = &.{
             .{ .name = "base", .module = base_module },
+            .{ .name = "element", .module = element_module },
         },
     });
 
