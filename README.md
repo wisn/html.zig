@@ -28,7 +28,106 @@ Let's leverage the comptime feature of Zig!
 
 ## Usage
 
-TBA.
+### Add Dependency
+
+Since there is no release just yet.
+We can use the commit hash in the dependency URL.
+First, add the following lines in your `build.zig.zon` file.
+
+```zig
+.{
+    // ...
+    .dependencies = .{
+        // ...
+        .html = .{
+            .url = "https://github.com/wisn/html.zig/archive/<commit hash>.tar.gz",
+        },
+    }
+    // ...
+}
+```
+
+Change the `<commit hash>` slug into your target commit.
+For example, let's say the target commit is `4ccedd2098dd7824659e86ee22695c1afc40a8c3`.
+Thus, the URL will be `https://github.com/wisn/html.zig/archive/4ccedd2098dd7824659e86ee22695c1afc40a8c3.tar.gz`.
+
+Second, try to run `zig build` first.
+You will get an error message, explaining that the hash field is missing.
+Zig will give you the hash. We can just use it!
+Finally, the `build.zig.zon` will look like this below.
+
+```zig
+.{
+    // ...
+    .dependencies = .{
+        // ...
+        .html = .{
+            .url = "https://github.com/wisn/html.zig/archive/4ccedd2098dd7824659e86ee22695c1afc40a8c3.tar.gz",
+            .hash = "html-0.1.0-H8FZYlReAQAuJgZgAHTd4c4X9gQpbfrK51WqvTd4mbyx",
+        },
+    }
+    // ...
+}
+```
+
+### Update Build File
+
+Next, we need to explicitly add our dependency in the `build.zig` file.
+Add these following lines above your main module.
+
+```zig
+const html = b.dependency("html", .{
+    .target = target,
+    .optimize = optimize,
+}).module("html");
+```
+
+Then, add the module above as an import for our main module.
+
+```zig
+<main_module>.addImport("html", html);
+```
+
+Change the `<main_module>` slug to your module name.
+For example, if your Zig project is following the freshly generated build structure, `exe_mod` should be the main executable module.
+Thus, the final line will look like this below.
+
+```zig
+exe_mod.addImport("html", html);
+```
+
+### Build HTML in Your Project
+
+I will use the following lines as an example. Let's say write these in the `main.zig` file.
+
+```zig
+const html = @import("html");
+const Attribute = html.base.Attribute;
+const RawText = html.base.RawText;
+const Html = html.element.Html;
+const Head = html.element.Head;
+const Body = html.element.Body;
+const H1 = html.element.H1;
+
+pub fn main() void {
+    const elm = Html(.{Attribute("lang")("en")})(.{
+        Head(.{}),
+        Body(.{
+            H1(.{RawText("Hello, world!")}),
+        }),
+    });
+    std.debug.print(elm.transform() ++ "\n", .{});
+}
+```
+
+When we run the `zig build run` command, it will print the following text.
+
+```html
+<!DOCTYPE html><html lang="en"><head></head><body><h1>Hello, world!</h1></body></html>
+```
+
+Now, enjoy building a (soon-to-be) standard-compliant HTML in Zig!
+Invalid HTML = compile error!
 
 ## Roadmap
 
