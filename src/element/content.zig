@@ -8,7 +8,7 @@ pub fn P(args: anytype) fn (anytype) Entity {
     return Element("p")(args);
 }
 
-pub fn Hr(args: anytype) fn (anytype) Entity {
+pub fn Hr(args: anytype) Entity {
     return VoidElement("hr")(args);
 }
 

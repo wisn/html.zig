@@ -32,3 +32,16 @@ pub fn Html(args: anytype) fn (anytype) Entity {
         }
     }.compose_children;
 }
+
+pub fn Comment(comment: []const u8) Entity {
+    return Entity{
+        .name = .Comment,
+        .transform = struct {
+            fn lambda() []const u8 {
+                const tag_start = "<!-- ";
+                const tag_end = " -->";
+                return tag_start ++ comment ++ tag_end;
+            }
+        }.lambda,
+    };
+}

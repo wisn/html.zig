@@ -112,10 +112,10 @@ pub fn Span(args: anytype) fn (anytype) Entity {
     return Element("span")(args);
 }
 
-pub fn Br(args: anytype) fn (anytype) Entity {
+pub fn Br(args: anytype) Entity {
     return VoidElement("br")(args);
 }
 
-pub fn Wbr(args: anytype) fn (anytype) Entity {
+pub fn Wbr(args: anytype) Entity {
     return VoidElement("wbr")(args);
 }

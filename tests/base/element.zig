@@ -4,7 +4,7 @@ const html = @import("html");
 const Attribute = html.base.Attribute;
 const Element = html.base.Element;
 const VoidElement = html.base.VoidElement;
-const Text = html.base.Text;
+const RawText = html.base.RawText;
 
 test "void element must transform accordingly" {
     const elm1 = VoidElement("br")(.{});
@@ -36,8 +36,8 @@ test "normal element must transform accordingly" {
     const elm4 = Element("nav")(.{
         Attribute("class")("navbar"),
     })(.{
-        Element("a")(.{Attribute("href")("http://localhost/")})(.{Text("foo")}),
-        Element("a")(.{Attribute("href")("http://localhost/")})(.{Text("bar")}),
+        Element("a")(.{Attribute("href")("http://localhost/")})(.{RawText("foo")}),
+        Element("a")(.{Attribute("href")("http://localhost/")})(.{RawText("bar")}),
     });
     try testing.expectEqualSlices(u8, "<nav class=\"navbar\"><a href=\"http://localhost/\">foo</a><a href=\"http://localhost/\">bar</a></nav>", elm4.transform());
 }

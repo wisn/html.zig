@@ -16,7 +16,7 @@ pub fn ColGroup(args: anytype) fn (anytype) Entity {
     return Element("colgroup")(args);
 }
 
-pub fn Col(args: anytype) fn (anytype) Entity {
+pub fn Col(args: anytype) Entity {
     return VoidElement("col")(args);
 }
 

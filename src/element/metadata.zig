@@ -12,15 +12,15 @@ pub fn Title(args: anytype) fn (anytype) Entity {
     return Element("title")(args);
 }
 
-pub fn Base(args: anytype) fn (anytype) Entity {
+pub fn Base(args: anytype) Entity {
     return VoidElement("base")(args);
 }
 
-pub fn Link(args: anytype) fn (anytype) Entity {
+pub fn Link(args: anytype) Entity {
     return VoidElement("link")(args);
 }
 
-pub fn Meta(args: anytype) fn (anytype) Entity {
+pub fn Meta(args: anytype) Entity {
     return VoidElement("meta")(args);
 }
 

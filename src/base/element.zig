@@ -57,7 +57,7 @@ pub fn VoidElement(name: []const u8) fn (anytype) Entity {
     }.compose_attributes;
 }
 
-pub fn Text(raw_text: []const u8) Entity {
+pub fn RawText(raw_text: []const u8) Entity {
     return Entity{
         .name = .Element,
         .transform = struct {

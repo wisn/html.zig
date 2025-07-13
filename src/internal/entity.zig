@@ -6,4 +6,5 @@ pub const Entity = struct {
 pub const EntityName = enum {
     Attribute,
     Element,
+    Comment,
 };
