@@ -1,39 +1,22 @@
 const std = @import("std");
-const transformer = @import("transformer.zig");
-const util = @import("util.zig");
-const validator = @import("validator.zig");
-const Entity = @import("entity.zig").Entity;
+const internal = @import("internal");
+const transformer = internal.transformer;
+const util = internal.util;
+const validator = internal.validator;
+const Entity = internal.entity.Entity;
 
 pub fn Element(name: []const u8) fn (anytype) (fn (anytype) Entity) {
     validator.Element.validate_name(name);
     return struct {
         fn closure(args: anytype) fn (anytype) Entity {
-            const fields = std.meta.fields(@TypeOf(args));
-            comptime var has_attribute = true;
-
-            if (fields.len > 0) {
-                const entity = util.fetch_entity(@field(args, fields[0].name));
-
-                if (entity == null) {
-                    @compileError("InvalidElementConstruct: unknown argument");
-                }
-
-                if (entity.?.name == .Attribute) {
-                    validator.Element.validate_attributes(args);
-                }
-
-                if (entity.?.name == .Element) {
-                    validator.Element.validate_elements(args);
-                    has_attribute = false;
-                }
-            }
-
-            const attributes = if (has_attribute) args else .{};
+            comptime var has_attributes = true;
+            validator.Element.validate_arguments(args, &has_attributes);
+            const attributes = if (has_attributes) args else .{};
 
             return struct {
                 fn compose_children(children: anytype) Entity {
                     validator.Element.validate_elements(children);
-                    const elements = if (has_attribute) children else args;
+                    const elements = if (has_attributes) children else args;
 
                     return Entity{
                         .name = .Element,
@@ -74,7 +57,7 @@ pub fn VoidElement(name: []const u8) fn (anytype) Entity {
     }.compose_attributes;
 }
 
-pub fn Text(raw_text: []const u8) Entity {
+pub fn RawText(raw_text: []const u8) Entity {
     return Entity{
         .name = .Element,
         .transform = struct {

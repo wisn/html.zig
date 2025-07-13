@@ -7,4 +7,4 @@ pub const InteractiveAttribute = attribute.InteractiveAttribute;
 
 pub const Element = element.Element;
 pub const VoidElement = element.VoidElement;
-pub const Text = element.Text;
+pub const RawText = element.RawText;

@@ -1,5 +1,6 @@
-const validator = @import("validator.zig");
-const Entity = @import("entity.zig").Entity;
+const internal = @import("internal");
+const validator = internal.validator;
+const Entity = internal.entity.Entity;
 
 pub fn Attribute(name: []const u8) fn (?[]const u8) Entity {
     validator.Attribute.validate_name(name);
