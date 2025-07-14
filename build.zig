@@ -81,7 +81,7 @@ pub fn build(b: *std.Build) void {
     // });
     const html_tests = b.addTest(.{
         .root_module = b.createModule(.{
-            .root_source_file = b.path("tests/html.zig"),
+            .root_source_file = b.path("tests/html/root.zig"),
             .target = target,
             .optimize = optimize,
             .imports = &.{
