@@ -1,27 +1,29 @@
 const std = @import("std");
 const internal = @import("internal");
+const validation = @import("validation");
 const transformer = internal.transformer;
 const util = internal.util;
-const validator = internal.validator;
 const Entity = internal.entity.Entity;
 
 pub fn Element(name: []const u8) fn (anytype) (fn (anytype) Entity) {
-    validator.Element.validate_name(name);
+    validation.base.element.validate_name(name);
     return struct {
         fn closure(args: anytype) fn (anytype) Entity {
             comptime var has_attributes = true;
-            validator.Element.validate_arguments(args, &has_attributes);
+            validation.base.element.validate_arguments(args, &has_attributes);
             const attributes = if (has_attributes) args else .{};
 
             return struct {
                 fn compose_children(children: anytype) Entity {
-                    validator.Element.validate_elements(children);
+                    validation.base.element.validate_elements(children);
                     const elements = if (has_attributes) children else args;
 
-                    return Entity{
+                    return comptime Entity{
                         .definition = .{
                             .element = .{
                                 .name = name,
+                                .attributes = util.fetch_entity_list(attributes),
+                                .elements = util.fetch_entity_list(elements),
                             },
                         },
                         .transform = struct {
@@ -42,14 +44,16 @@ pub fn Element(name: []const u8) fn (anytype) (fn (anytype) Entity) {
 }
 
 pub fn VoidElement(name: []const u8) fn (anytype) Entity {
-    validator.Element.validate_name(name);
+    validation.base.element.validate_name(name);
     return struct {
         fn compose_attributes(attributes: anytype) Entity {
-            validator.Element.validate_attributes(attributes);
-            return Entity{
+            validation.base.element.validate_attributes(attributes);
+            return comptime Entity{
                 .definition = .{
                     .element = .{
                         .name = name,
+                        .is_void = true,
+                        .attributes = util.fetch_entity_list(attributes),
                     },
                 },
                 .transform = struct {
@@ -66,7 +70,7 @@ pub fn VoidElement(name: []const u8) fn (anytype) Entity {
 }
 
 pub fn RawText(raw_text: []const u8) Entity {
-    return Entity{
+    return comptime Entity{
         .definition = .{
             .text = .{
                 .sanitize = false,

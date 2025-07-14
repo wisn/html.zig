@@ -21,8 +21,9 @@ pub const CommentDefinition = struct {
 
 pub const ElementDefinition = struct {
     name: []const u8,
-    attributes: []Entity = &[_]Entity{},
-    elements: []Entity = &[_]Entity{},
+    is_void: bool = false,
+    attributes: []const Entity = &[_]Entity{},
+    elements: []const Entity = &[_]Entity{},
 };
 
 pub const TextDefinition = struct {

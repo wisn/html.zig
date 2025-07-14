@@ -1,24 +1,27 @@
 const base = @import("base");
 const internal = @import("internal");
+const validation = @import("validation");
 const transformer = internal.transformer;
-const validator = internal.validator;
+const util = internal.util;
 const Entity = internal.entity.Entity;
 const Element = base.Element;
 
 pub fn Html(args: anytype) fn (anytype) Entity {
     comptime var has_attributes = true;
-    validator.Element.validate_arguments(args, &has_attributes);
+    validation.base.element.validate_arguments(args, &has_attributes);
     const attributes = if (has_attributes) args else .{};
 
     return struct {
         fn compose_children(children: anytype) Entity {
-            validator.Element.validate_elements(children);
+            validation.base.element.validate_elements(children);
             const elements = if (has_attributes) children else args;
 
-            return Entity{
+            return comptime Entity{
                 .definition = .{
                     .element = .{
                         .name = "html",
+                        .attributes = util.fetch_entity_list(attributes),
+                        .elements = util.fetch_entity_list(elements),
                     },
                 },
                 .transform = struct {
@@ -38,7 +41,7 @@ pub fn Html(args: anytype) fn (anytype) Entity {
 }
 
 pub fn Comment(comment: []const u8) Entity {
-    return Entity{
+    return comptime Entity{
         .definition = .{
             .comment = .{
                 .value = comment,

@@ -22,12 +22,22 @@ pub fn build(b: *std.Build) void {
         .imports = &.{},
     });
 
+    const validation_module = b.createModule(.{
+        .root_source_file = b.path("src/html/validation/root.zig"),
+        .target = target,
+        .optimize = optimize,
+        .imports = &.{
+            .{ .name = "internal", .module = internal_module },
+        },
+    });
+
     const base_module = b.createModule(.{
         .root_source_file = b.path("src/html/base/root.zig"),
         .target = target,
         .optimize = optimize,
         .imports = &.{
             .{ .name = "internal", .module = internal_module },
+            .{ .name = "validation", .module = validation_module },
         },
     });
 
@@ -38,6 +48,7 @@ pub fn build(b: *std.Build) void {
         .imports = &.{
             .{ .name = "internal", .module = internal_module },
             .{ .name = "base", .module = base_module },
+            .{ .name = "validation", .module = validation_module },
         },
     });
 

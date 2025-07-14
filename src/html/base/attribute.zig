@@ -1,13 +1,13 @@
 const internal = @import("internal");
-const validator = internal.validator;
+const validation = @import("validation");
 const Entity = internal.entity.Entity;
 
 pub fn Attribute(name: []const u8) fn (?[]const u8) Entity {
-    validator.Attribute.validate_name(name);
+    validation.base.attribute.validate_name(name);
     return struct {
         fn compose_value(value: ?[]const u8) Entity {
-            validator.Attribute.validate_value(value);
-            return Entity{
+            validation.base.attribute.validate_value(value);
+            return comptime Entity{
                 .definition = .{
                     .attribute = .{
                         .name = name,
