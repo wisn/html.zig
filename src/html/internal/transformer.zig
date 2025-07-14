@@ -15,13 +15,13 @@ pub fn transform_attributes(attributes: anytype) []const u8 {
 
                 switch (typeof) {
                     Entity => {
-                        if (argument.name == .Attribute) {
+                        if (argument.definition == .attribute) {
                             return " " ++ argument.transform() ++ transform(fields[1..]);
                         }
                     },
                     fn (?[]const u8) Entity => {
                         const normalized_argument = argument(null);
-                        if (normalized_argument.name == .Attribute) {
+                        if (normalized_argument.definition == .attribute) {
                             return " " ++ normalized_argument.transform() ++ transform(fields[1..]);
                         }
                     },
@@ -48,19 +48,19 @@ pub fn transform_elements(elements: anytype) []const u8 {
 
                 switch (typeof) {
                     Entity => {
-                        if (argument.name == .Element) {
+                        if (argument.definition != .attribute) {
                             return argument.transform() ++ transform(fields[1..]);
                         }
                     },
                     fn (anytype) Entity => {
                         const normalized_argument = argument(.{});
-                        if (normalized_argument.name == .Element) {
+                        if (normalized_argument.definition != .attribute) {
                             return normalized_argument.transform() ++ transform(fields[1..]);
                         }
                     },
                     fn (anytype) (fn (anytype) Entity) => {
                         const normalized_argument = argument(.{})(.{});
-                        if (normalized_argument.name == .Element) {
+                        if (normalized_argument.definition != .attribute) {
                             return normalized_argument.transform() ++ transform(fields[1..]);
                         }
                     },

@@ -8,7 +8,12 @@ pub fn Attribute(name: []const u8) fn (?[]const u8) Entity {
         fn compose_value(value: ?[]const u8) Entity {
             validator.Attribute.validate_value(value);
             return Entity{
-                .name = .Attribute,
+                .definition = .{
+                    .attribute = .{
+                        .name = name,
+                        .value = value,
+                    },
+                },
                 .transform = struct {
                     fn lambda() []const u8 {
                         if (value) |string| {

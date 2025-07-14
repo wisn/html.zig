@@ -16,7 +16,11 @@ pub fn Html(args: anytype) fn (anytype) Entity {
             const elements = if (has_attributes) children else args;
 
             return Entity{
-                .name = .Element,
+                .definition = .{
+                    .element = .{
+                        .name = "html",
+                    },
+                },
                 .transform = struct {
                     fn lambda() []const u8 {
                         const doctype = "<!DOCTYPE html>";
@@ -35,7 +39,11 @@ pub fn Html(args: anytype) fn (anytype) Entity {
 
 pub fn Comment(comment: []const u8) Entity {
     return Entity{
-        .name = .Comment,
+        .definition = .{
+            .comment = .{
+                .value = comment,
+            },
+        },
         .transform = struct {
             fn lambda() []const u8 {
                 const tag_start = "<!-- ";

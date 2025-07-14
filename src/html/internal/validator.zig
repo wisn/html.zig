@@ -92,7 +92,7 @@ pub const Element = struct {
                 @compileError("InvalidAttributeArgument: unknown type");
             }
 
-            if (entity.?.name != .Attribute) {
+            if (entity.?.definition != .attribute) {
                 @compileError(error_message);
             }
         }
@@ -109,7 +109,7 @@ pub const Element = struct {
                 @compileError("InvalidElementArgument: unknown type");
             }
 
-            if (entity.?.name != .Element) {
+            if (entity.?.definition == .attribute) {
                 @compileError(error_message);
             }
         }
@@ -124,13 +124,14 @@ pub const Element = struct {
                 @compileError("InvalidElementConstruct: unknown argument");
             }
 
-            if (entity.?.name == .Attribute) {
-                Element.validate_attributes(args);
-            }
-
-            if (entity.?.name == .Element) {
-                Element.validate_elements(args);
-                has_attributes.* = false;
+            switch (entity.?.definition) {
+                .attribute => {
+                    Element.validate_attributes(args);
+                },
+                else => {
+                    Element.validate_elements(args);
+                    has_attributes.* = false;
+                },
             }
         }
     }

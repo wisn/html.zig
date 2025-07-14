@@ -19,7 +19,11 @@ pub fn Element(name: []const u8) fn (anytype) (fn (anytype) Entity) {
                     const elements = if (has_attributes) children else args;
 
                     return Entity{
-                        .name = .Element,
+                        .definition = .{
+                            .element = .{
+                                .name = name,
+                            },
+                        },
                         .transform = struct {
                             fn lambda() []const u8 {
                                 const tag_start = "<" ++ name;
@@ -43,7 +47,11 @@ pub fn VoidElement(name: []const u8) fn (anytype) Entity {
         fn compose_attributes(attributes: anytype) Entity {
             validator.Element.validate_attributes(attributes);
             return Entity{
-                .name = .Element,
+                .definition = .{
+                    .element = .{
+                        .name = name,
+                    },
+                },
                 .transform = struct {
                     fn lambda() []const u8 {
                         const tag_start = "<" ++ name;
@@ -59,7 +67,12 @@ pub fn VoidElement(name: []const u8) fn (anytype) Entity {
 
 pub fn RawText(raw_text: []const u8) Entity {
     return Entity{
-        .name = .Element,
+        .definition = .{
+            .text = .{
+                .sanitize = false,
+                .value = raw_text,
+            },
+        },
         .transform = struct {
             fn lambda() []const u8 {
                 return raw_text;
