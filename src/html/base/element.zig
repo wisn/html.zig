@@ -23,7 +23,7 @@ pub fn Element(name: []const u8) fn (anytype) (fn (anytype) Entity) {
                             .element = .{
                                 .name = name,
                                 .attributes = util.fetch_entity_list(attributes),
-                                .elements = util.fetch_entity_list(elements),
+                                .chlidren = util.fetch_entity_list(elements),
                             },
                         },
                         .transform = struct {

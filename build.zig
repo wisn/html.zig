@@ -41,6 +41,15 @@ pub fn build(b: *std.Build) void {
         },
     });
 
+    const transformer_module = b.createModule(.{
+        .root_source_file = b.path("src/html/transformer/root.zig"),
+        .target = target,
+        .optimize = optimize,
+        .imports = &.{
+            .{ .name = "internal", .module = internal_module },
+        },
+    });
+
     const element_module = b.createModule(.{
         .root_source_file = b.path("src/html/element/root.zig"),
         .target = target,
@@ -66,6 +75,7 @@ pub fn build(b: *std.Build) void {
         .imports = &.{
             .{ .name = "base", .module = base_module },
             .{ .name = "element", .module = element_module },
+            .{ .name = "transformer", .module = transformer_module },
         },
     });
 

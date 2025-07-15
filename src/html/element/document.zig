@@ -21,7 +21,7 @@ pub fn Html(args: anytype) fn (anytype) Entity {
                     .element = .{
                         .name = "html",
                         .attributes = util.fetch_entity_list(attributes),
-                        .elements = util.fetch_entity_list(elements),
+                        .chlidren = util.fetch_entity_list(elements),
                     },
                 },
                 .transform = struct {

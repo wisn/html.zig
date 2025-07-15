@@ -1,6 +1,7 @@
 const std = @import("std");
 const testing = std.testing;
 const html = @import("html");
+const transform = html.transform;
 const Attribute = html.base.Attribute;
 const RawText = html.base.RawText;
 const Comment = html.element.Comment;
@@ -15,7 +16,7 @@ test "comment element must transform accordingly" {
     const elm = Comment("this is a simple comment");
     try testing.expect(elm.definition == .comment);
     try testing.expectEqualSlices(u8, "this is a simple comment", elm.definition.comment.value);
-    try testing.expectEqualSlices(u8, "<!-- this is a simple comment -->", elm.transform());
+    try testing.expectEqualSlices(u8, "<!-- this is a simple comment -->", transform(.{elm}));
 }
 
 test "html element must transform accordingly" {
@@ -32,6 +33,6 @@ test "html element must transform accordingly" {
     try testing.expectEqualSlices(u8, "html", elm.definition.element.name);
     try testing.expect(elm.definition.element.is_void == false);
     try testing.expect(elm.definition.element.attributes.len == 1);
-    try testing.expect(elm.definition.element.elements.len == 2);
-    try testing.expectEqualSlices(u8, expected, elm.transform());
+    try testing.expect(elm.definition.element.chlidren.len == 2);
+    try testing.expectEqualSlices(u8, expected, transform(.{elm}));
 }
