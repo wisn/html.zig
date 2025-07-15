@@ -1,6 +1,13 @@
 pub const Entity = struct {
     definition: EntityDefinition,
-    transform: fn () []const u8,
+    // NOTE: passing function in a struct make it easy for us to do comptime operation.
+    //       it is also good to provide transform function for each entity.
+    //       we may call this method for transforming its entity to html text directly.
+    transform: fn () []const u8 = struct {
+        fn default() []const u8 {
+            return "";
+        }
+    }.default,
 };
 
 pub const EntityDefinition = union(enum) {

@@ -22,6 +22,15 @@ pub fn build(b: *std.Build) void {
         .imports = &.{},
     });
 
+    const transformer_module = b.createModule(.{
+        .root_source_file = b.path("src/html/transformer/root.zig"),
+        .target = target,
+        .optimize = optimize,
+        .imports = &.{
+            .{ .name = "internal", .module = internal_module },
+        },
+    });
+
     const validation_module = b.createModule(.{
         .root_source_file = b.path("src/html/validation/root.zig"),
         .target = target,
@@ -37,16 +46,8 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
         .imports = &.{
             .{ .name = "internal", .module = internal_module },
+            .{ .name = "transformer", .module = transformer_module },
             .{ .name = "validation", .module = validation_module },
-        },
-    });
-
-    const transformer_module = b.createModule(.{
-        .root_source_file = b.path("src/html/transformer/root.zig"),
-        .target = target,
-        .optimize = optimize,
-        .imports = &.{
-            .{ .name = "internal", .module = internal_module },
         },
     });
 
@@ -55,8 +56,9 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
         .imports = &.{
-            .{ .name = "internal", .module = internal_module },
             .{ .name = "base", .module = base_module },
+            .{ .name = "internal", .module = internal_module },
+            .{ .name = "transformer", .module = transformer_module },
             .{ .name = "validation", .module = validation_module },
         },
     });

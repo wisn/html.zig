@@ -1,7 +1,7 @@
 const std = @import("std");
 const internal = @import("internal");
+const transformer = @import("transformer");
 const validation = @import("validation");
-const transformer = internal.transformer;
 const util = internal.util;
 const Entity = internal.entity.Entity;
 
@@ -17,8 +17,7 @@ pub fn Element(name: []const u8) fn (anytype) (fn (anytype) Entity) {
                 fn compose_children(children: anytype) Entity {
                     validation.base.element.validate_elements(children);
                     const elements = if (has_attributes) children else args;
-
-                    return comptime Entity{
+                    const entity = Entity{
                         .definition = .{
                             .element = .{
                                 .name = name,
@@ -26,14 +25,13 @@ pub fn Element(name: []const u8) fn (anytype) (fn (anytype) Entity) {
                                 .chlidren = util.fetch_entity_list(elements),
                             },
                         },
+                    };
+
+                    return comptime Entity{
+                        .definition = entity.definition,
                         .transform = struct {
                             fn lambda() []const u8 {
-                                const tag_start = "<" ++ name;
-                                const tag_attributes = comptime transformer.transform_attributes(attributes);
-                                const tag_close = ">";
-                                const tag_children = comptime transformer.transform_elements(elements);
-                                const tag_end = "</" ++ name ++ ">";
-                                return tag_start ++ tag_attributes ++ tag_close ++ tag_children ++ tag_end;
+                                return transformer.transform(.{entity});
                             }
                         }.lambda,
                     };
@@ -48,7 +46,7 @@ pub fn VoidElement(name: []const u8) fn (anytype) Entity {
     return struct {
         fn compose_attributes(attributes: anytype) Entity {
             validation.base.element.validate_attributes(attributes);
-            return comptime Entity{
+            const entity = Entity{
                 .definition = .{
                     .element = .{
                         .name = name,
@@ -56,12 +54,13 @@ pub fn VoidElement(name: []const u8) fn (anytype) Entity {
                         .attributes = util.fetch_entity_list(attributes),
                     },
                 },
+            };
+
+            return comptime Entity{
+                .definition = entity.definition,
                 .transform = struct {
                     fn lambda() []const u8 {
-                        const tag_start = "<" ++ name;
-                        const tag_attributes = comptime transformer.transform_attributes(attributes);
-                        const tag_end = ">";
-                        return tag_start ++ tag_attributes ++ tag_end;
+                        return transformer.transform(.{entity});
                     }
                 }.lambda,
             };
@@ -70,16 +69,19 @@ pub fn VoidElement(name: []const u8) fn (anytype) Entity {
 }
 
 pub fn RawText(raw_text: []const u8) Entity {
-    return comptime Entity{
+    const entity = Entity{
         .definition = .{
             .text = .{
                 .sanitize = false,
                 .value = raw_text,
             },
         },
+    };
+    return comptime Entity{
+        .definition = entity.definition,
         .transform = struct {
             fn lambda() []const u8 {
-                return raw_text;
+                return transformer.transform(.{entity});
             }
         }.lambda,
     };

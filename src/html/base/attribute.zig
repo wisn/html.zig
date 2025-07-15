@@ -1,4 +1,5 @@
 const internal = @import("internal");
+const transformer = @import("transformer");
 const validation = @import("validation");
 const Entity = internal.entity.Entity;
 
@@ -7,19 +8,20 @@ pub fn Attribute(name: []const u8) fn (?[]const u8) Entity {
     return struct {
         fn compose_value(value: ?[]const u8) Entity {
             validation.base.attribute.validate_value(value);
-            return comptime Entity{
+            const entity = Entity{
                 .definition = .{
                     .attribute = .{
                         .name = name,
                         .value = value,
                     },
                 },
+            };
+
+            return comptime Entity{
+                .definition = entity.definition,
                 .transform = struct {
                     fn lambda() []const u8 {
-                        if (value) |string| {
-                            return name ++ "=\"" ++ string ++ "\"";
-                        }
-                        return name;
+                        return transformer.transform(.{entity});
                     }
                 }.lambda,
             };
