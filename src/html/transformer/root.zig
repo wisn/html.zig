@@ -1,5 +1,6 @@
 const std = @import("std");
 const internal = @import("internal");
+const util = internal.util;
 const Entity = internal.entity.Entity;
 
 pub fn transform(any: anytype) []const u8 {
@@ -45,6 +46,9 @@ fn transform_internal(entity: Entity) []const u8 {
             return "<!-- " ++ entity.definition.comment.value ++ " -->";
         },
         .text => {
+            if (entity.definition.text.sanitize) {
+                return util.sanitize_text(entity.definition.text.value);
+            }
             return entity.definition.text.value;
         },
         .element => {

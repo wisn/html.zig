@@ -8,3 +8,4 @@ pub const InteractiveAttribute = attribute.InteractiveAttribute;
 pub const Element = element.Element;
 pub const VoidElement = element.VoidElement;
 pub const RawText = element.RawText;
+pub const Text = element.Text;

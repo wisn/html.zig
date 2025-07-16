@@ -8,7 +8,25 @@ pub fn fetch_entity(field: anytype) ?Entity {
         fn (?[]const u8) Entity => field(null),
         fn (anytype) Entity => field(.{}),
         fn (anytype) (fn (anytype) Entity) => field(.{})(.{}),
-        else => null,
+        else => {
+            const typename = @typeName(typeof);
+            if (std.mem.startsWith(u8, typename, "*const [") and std.mem.endsWith(u8, typename, ":0]u8")) {
+                return Entity{
+                    .definition = .{
+                        .text = .{
+                            .sanitize = false,
+                            .value = field,
+                        },
+                    },
+                    .transform = struct {
+                        fn lambda() []const u8 {
+                            return field;
+                        }
+                    }.lambda,
+                };
+            }
+            return null;
+        },
     };
 }
 
@@ -29,4 +47,16 @@ pub fn fetch_entity_list(any: anytype) []const Entity {
             return &[_]Entity{entity.?} ++ append(fields[1..]);
         }
     }.append(meta_fields);
+}
+
+pub fn sanitize_text(text: []const u8) []const u8 {
+    if (text.len == 0) {
+        return "";
+    }
+    const char = switch (text[0]) {
+        '<' => "&lt;",
+        '>' => "&gt;",
+        else => "" ++ &[_]u8{text[0]},
+    };
+    return char ++ sanitize_text(text[1..]);
 }

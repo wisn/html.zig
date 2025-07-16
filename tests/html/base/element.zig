@@ -6,6 +6,7 @@ const Attribute = html.base.Attribute;
 const Element = html.base.Element;
 const VoidElement = html.base.VoidElement;
 const RawText = html.base.RawText;
+const Text = html.base.Text;
 
 test "void element must transform accordingly" {
     const elm1 = VoidElement("br")(.{});
@@ -75,4 +76,16 @@ test "normal element must transform accordingly" {
     try testing.expect(elm4.definition.element.chlidren.len == 2);
     const expected = "<nav class=\"navbar\"><a href=\"http://localhost/\">foo</a><a href=\"http://localhost/\">bar</a></nav>";
     try testing.expectEqualSlices(u8, expected, transform(.{elm4}));
+}
+
+test "text element must transform accordingly" {
+    const elm1 = RawText("<p>rawwww</p>");
+    try testing.expectEqualSlices(u8, "<p>rawwww</p>", transform(.{elm1}));
+    const elm2 = Text("<p>rawwww</p>");
+    try testing.expectEqualSlices(u8, "&lt;p&gt;rawwww&lt;/p&gt;", transform(.{elm2}));
+    const elm3 = Element("div")(.{
+        "first <b>raw</b> text\n",
+        "or is it?",
+    });
+    try testing.expectEqualSlices(u8, "<div>first <b>raw</b> text\nor is it?</div>", transform(.{elm3}));
 }

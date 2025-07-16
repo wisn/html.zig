@@ -86,3 +86,22 @@ pub fn RawText(raw_text: []const u8) Entity {
         }.lambda,
     };
 }
+
+pub fn Text(text: []const u8) Entity {
+    const entity = Entity{
+        .definition = .{
+            .text = .{
+                .sanitize = true,
+                .value = text,
+            },
+        },
+    };
+    return comptime Entity{
+        .definition = entity.definition,
+        .transform = struct {
+            fn lambda() []const u8 {
+                return transformer.transform(.{entity});
+            }
+        }.lambda,
+    };
+}
