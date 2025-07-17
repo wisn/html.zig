@@ -48,8 +48,8 @@ First, add the following lines in your `build.zig.zon` file.
 ```
 
 Change the `<commit hash>` slug into your target commit.
-For example, let's say the target commit is `4ccedd2098dd7824659e86ee22695c1afc40a8c3`.
-Thus, the URL will be `https://github.com/wisn/html.zig/archive/4ccedd2098dd7824659e86ee22695c1afc40a8c3.tar.gz`.
+For example, let's say the target commit is `3060f0297369efc6b428270db128b62a7c4059fa`.
+Thus, the URL will be `https://github.com/wisn/html.zig/archive/3060f0297369efc6b428270db128b62a7c4059fa.tar.gz`.
 
 Second, try to run `zig build` first.
 You will get an error message, explaining that the hash field is missing.
@@ -62,8 +62,8 @@ Finally, the `build.zig.zon` will look like this below.
     .dependencies = .{
         // ...
         .html = .{
-            .url = "https://github.com/wisn/html.zig/archive/4ccedd2098dd7824659e86ee22695c1afc40a8c3.tar.gz",
-            .hash = "html-0.1.0-H8FZYlReAQAuJgZgAHTd4c4X9gQpbfrK51WqvTd4mbyx",
+            .url = "https://github.com/wisn/html.zig/archive/3060f0297369efc6b428270db128b62a7c4059fa.tar.gz",
+            .hash = "html-0.1.0-H8FZYgB7AQD4dvpUols_RejbBRRV76P8U5eGag4o-E0k",
         },
     }
     // ...
@@ -103,7 +103,7 @@ I will use the following lines as an example. Let's say write these in the `main
 ```zig
 const html = @import("html");
 const Attribute = html.base.Attribute;
-const RawText = html.base.RawText;
+const Text = html.base.Text;
 const Html = html.element.Html;
 const Head = html.element.Head;
 const Body = html.element.Body;
@@ -111,9 +111,9 @@ const H1 = html.element.H1;
 
 pub fn main() void {
     const elm = Html(.{Attribute("lang")("en")})(.{
-        Head(.{}),
+        Head,
         Body(.{
-            H1(.{RawText("Hello, world!")}),
+            H1(.{Text(.{"Hello, world!"})}),
         }),
     });
     std.debug.print(elm.transform() ++ "\n", .{});
