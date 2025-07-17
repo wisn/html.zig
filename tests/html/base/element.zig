@@ -67,8 +67,8 @@ test "normal element must transform accordingly" {
     const elm4 = Element("nav")(.{
         Attribute("class")("navbar"),
     })(.{
-        Element("a")(.{Attribute("href")("http://localhost/")})(.{RawText("foo")}),
-        Element("a")(.{Attribute("href")("http://localhost/")})(.{RawText("bar")}),
+        Element("a")(.{Attribute("href")("http://localhost/")})(.{RawText(.{"foo"})}),
+        Element("a")(.{Attribute("href")("http://localhost/")})(.{RawText(.{"bar"})}),
     });
     try testing.expectEqualSlices(u8, "nav", elm4.definition.element.name);
     try testing.expect(elm4.definition.element.is_void == false);
@@ -79,13 +79,15 @@ test "normal element must transform accordingly" {
 }
 
 test "text element must transform accordingly" {
-    const elm1 = RawText("<p>rawwww</p>");
+    const elm1 = RawText(.{"<p>rawwww</p>"});
     try testing.expectEqualSlices(u8, "<p>rawwww</p>", transform(.{elm1}));
-    const elm2 = Text("<p>rawwww</p>");
+    const elm2 = Text(.{"<p>rawwww</p>"});
     try testing.expectEqualSlices(u8, "&lt;p&gt;rawwww&lt;/p&gt;", transform(.{elm2}));
     const elm3 = Element("div")(.{
-        "first <b>raw</b> text\n",
-        "or is it?",
+        RawText(.{
+            "first <b>raw</b> text\n",
+            "or is it?",
+        }),
     });
     try testing.expectEqualSlices(u8, "<div>first <b>raw</b> text\nor is it?</div>", transform(.{elm3}));
 }

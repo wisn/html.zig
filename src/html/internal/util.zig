@@ -8,25 +8,7 @@ pub fn fetch_entity(field: anytype) ?Entity {
         fn (?[]const u8) Entity => field(null),
         fn (anytype) Entity => field(.{}),
         fn (anytype) (fn (anytype) Entity) => field(.{})(.{}),
-        else => {
-            const typename = @typeName(typeof);
-            if (std.mem.startsWith(u8, typename, "*const [") and std.mem.endsWith(u8, typename, ":0]u8")) {
-                return Entity{
-                    .definition = .{
-                        .text = .{
-                            .sanitize = false,
-                            .value = field,
-                        },
-                    },
-                    .transform = struct {
-                        fn lambda() []const u8 {
-                            return field;
-                        }
-                    }.lambda,
-                };
-            }
-            return null;
-        },
+        else => null,
     };
 }
 
