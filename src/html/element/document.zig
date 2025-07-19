@@ -24,6 +24,7 @@ pub fn Html(args: anytype) fn (anytype) Entity {
                     },
                 },
             };
+            validation.element.validate_element(&entity);
 
             return Entity{
                 .definition = entity.definition,

@@ -26,6 +26,7 @@ pub fn Element(name: []const u8) fn (anytype) (fn (anytype) Entity) {
                             },
                         },
                     };
+                    validation.element.validate_element(&entity);
 
                     return Entity{
                         .definition = entity.definition,
@@ -55,6 +56,7 @@ pub fn VoidElement(name: []const u8) fn (anytype) Entity {
                     },
                 },
             };
+            validation.element.validate_element(&entity);
 
             return Entity{
                 .definition = entity.definition,

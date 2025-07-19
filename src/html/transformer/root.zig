@@ -15,18 +15,18 @@ pub fn transform(any: anytype) []const u8 {
             const typeof = @TypeOf(argument);
 
             switch (typeof) {
-                Entity => return comptime transform_internal(argument) ++ recurse(fields[1..]),
+                Entity => return comptime transform_internal(&argument) ++ recurse(fields[1..]),
                 fn (?[]const u8) Entity => {
                     const attribute = argument(null);
-                    return comptime transform_internal(attribute) ++ recurse(fields[1..]);
+                    return comptime transform_internal(&attribute) ++ recurse(fields[1..]);
                 },
                 fn (anytype) Entity => {
                     const element = argument(.{});
-                    return comptime transform_internal(element) ++ recurse(fields[1..]);
+                    return comptime transform_internal(&element) ++ recurse(fields[1..]);
                 },
                 fn (anytype) (fn (anytype) Entity) => {
                     const element = argument(.{})(.{});
-                    return comptime transform_internal(element) ++ recurse(fields[1..]);
+                    return comptime transform_internal(&element) ++ recurse(fields[1..]);
                 },
                 else => @compileError("InvalidTransformArgument: unknown type"),
             }
@@ -34,7 +34,7 @@ pub fn transform(any: anytype) []const u8 {
     }.recurse(meta_fields);
 }
 
-fn transform_internal(entity: Entity) []const u8 {
+fn transform_internal(entity: *const Entity) []const u8 {
     switch (entity.definition) {
         .attribute => {
             if (entity.definition.attribute.value == null) {
@@ -59,6 +59,7 @@ fn transform_internal(entity: Entity) []const u8 {
             const tag_close = ">";
             const tag_children = if (element.is_void) "" else comptime transform_all(element.chlidren, "");
             const tag_end = if (element.is_void) "" else "</" ++ element.name ++ ">";
+
             return tag_prepend ++ tag_start ++ tag_attributes ++ tag_close ++ tag_children ++ tag_end;
         },
     }
@@ -68,5 +69,5 @@ fn transform_all(entities: []const Entity, prepend: []const u8) []const u8 {
     if (entities.len == 0) {
         return "";
     }
-    return prepend ++ transform_internal(entities[0]) ++ transform_all(entities[1..], prepend);
+    return prepend ++ transform_internal(&entities[0]) ++ transform_all(entities[1..], prepend);
 }
