@@ -25,7 +25,7 @@ pub fn Html(args: anytype) fn (anytype) Entity {
                 },
             };
 
-            return comptime Entity{
+            return Entity{
                 .definition = entity.definition,
                 .transform = struct {
                     fn lambda() []const u8 {
@@ -45,7 +45,7 @@ pub fn Comment(comment: []const u8) Entity {
             },
         },
     };
-    return comptime Entity{
+    return Entity{
         .definition = entity.definition,
         .transform = struct {
             fn lambda() []const u8 {

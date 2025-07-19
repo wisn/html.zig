@@ -14,7 +14,7 @@ pub fn RawText(texts: anytype) Entity {
         },
     };
 
-    return comptime Entity{
+    return Entity{
         .definition = entity.definition,
         .transform = struct {
             fn lambda() []const u8 {
@@ -35,7 +35,7 @@ pub fn Text(texts: anytype) Entity {
         },
     };
 
-    return comptime Entity{
+    return Entity{
         .definition = entity.definition,
         .transform = struct {
             fn lambda() []const u8 {

@@ -27,7 +27,7 @@ pub fn Element(name: []const u8) fn (anytype) (fn (anytype) Entity) {
                         },
                     };
 
-                    return comptime Entity{
+                    return Entity{
                         .definition = entity.definition,
                         .transform = struct {
                             fn lambda() []const u8 {
@@ -56,7 +56,7 @@ pub fn VoidElement(name: []const u8) fn (anytype) Entity {
                 },
             };
 
-            return comptime Entity{
+            return Entity{
                 .definition = entity.definition,
                 .transform = struct {
                     fn lambda() []const u8 {

@@ -17,7 +17,7 @@ pub fn Attribute(name: []const u8) fn (?[]const u8) Entity {
                 },
             };
 
-            return comptime Entity{
+            return Entity{
                 .definition = entity.definition,
                 .transform = struct {
                     fn lambda() []const u8 {
