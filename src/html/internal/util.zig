@@ -1,4 +1,5 @@
 const std = @import("std");
+const constant = @import("constant/root.zig");
 const Entity = @import("entity.zig").Entity;
 
 pub fn fetch_entity(field: anytype) ?Entity {
@@ -41,4 +42,14 @@ pub fn sanitize_text(text: []const u8) []const u8 {
         else => "" ++ &[_]u8{text[0]},
     };
     return char ++ sanitize_text(text[1..]);
+}
+
+pub fn has_undefined_attribute(attributes: *const []const Entity) bool {
+    for (attributes.*) |attribute| {
+        const attribute_name = attribute.definition.attribute.name;
+        if (!constant.attribute.GLOBAL_ATTRIBUTE.has(attribute_name) and !constant.attribute.EVENT_HANDLER_ATTRIBUTE.has(attribute_name)) {
+            return true;
+        }
+    }
+    return false;
 }

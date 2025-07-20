@@ -18,4 +18,8 @@ pub fn validate_html(entity: *const Entity) void {
     if (!eql(u8, first_element.name, "head") or !eql(u8, second_element.name, "body")) {
         @compileError(error_message);
     }
+
+    if (internal.util.has_undefined_attribute(&element.attributes)) {
+        @compileError("InvalidContentAttribute: Only global attributes and event handler attributes are supported in the html element.");
+    }
 }

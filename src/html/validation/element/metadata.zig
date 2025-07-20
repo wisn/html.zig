@@ -26,6 +26,10 @@ pub fn validate_head(entity: *const Entity) void {
     if (base_element_count > 1) {
         @compileError("InvalidContentModel: The head element must have at most one base element.");
     }
+
+    if (internal.util.has_undefined_attribute(&element.attributes)) {
+        @compileError("InvalidContentAttribute: Only global attributes and event handler attributes are supported in the head element.");
+    }
 }
 
 pub fn validate_title(entity: *const Entity) void {
@@ -47,5 +51,9 @@ pub fn validate_title(entity: *const Entity) void {
 
     if (children.len != text_element_count) {
         @compileError(error_message);
+    }
+
+    if (internal.util.has_undefined_attribute(&element.attributes)) {
+        @compileError("InvalidContentAttribute: Only global attributes and event handler attributes are supported in the title element.");
     }
 }
