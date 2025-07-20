@@ -30,7 +30,7 @@ pub fn validate_name(name: []const u8) void {
 
         is_illegal = is_illegal or codepoint < 0x00 or codepoint >= 0x00EFB790;
         is_illegal = is_illegal or contains(illegal_codepoints, codepoint);
-        is_illegal = is_illegal or contains(constant.CONTROL_CODEPOINTS, codepoint);
+        is_illegal = is_illegal or contains(constant.codepoint.CONTROL_CODEPOINT, codepoint);
     }
 
     if (is_illegal) {
@@ -43,7 +43,8 @@ pub fn validate_value(value: ?[]const u8) void {
         var left: usize = 0;
         const length = string.len;
 
-        const max_branches = string.len * constant.NAMED_CHARACTERS.kvs.len * std.math.log2_int_ceil(usize, constant.NAMED_CHARACTERS.kvs.len);
+        const named_character = constant.codepoint.NAMED_CHARACTER_CODEPOINT;
+        const max_branches = string.len * named_character.kvs.len * std.math.log2_int_ceil(usize, named_character.kvs.len);
         @setEvalBranchQuota(max_branches);
 
         while (left < length) : (left += 1) {
@@ -55,7 +56,7 @@ pub fn validate_value(value: ?[]const u8) void {
                 if (selection[selection.len - 1] == ';') {
                     var buffer: [selection.len]u8 = undefined;
                     const entity = std.ascii.lowerString(&buffer, selection);
-                    if (!constant.NAMED_CHARACTERS.has(entity)) {
+                    if (!named_character.has(entity)) {
                         @compileError("InvalidAttributeValue: \"" ++ entity ++ "\" contains ambiguous ampersand");
                     }
                 }
