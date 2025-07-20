@@ -46,10 +46,17 @@ pub fn sanitize_text(text: []const u8) []const u8 {
 
 pub fn has_undefined_attribute(attributes: *const []const Entity) bool {
     for (attributes.*) |attribute| {
-        const attribute_name = attribute.definition.attribute.name;
-        if (!constant.attribute.GLOBAL_ATTRIBUTE.has(attribute_name) and !constant.attribute.EVENT_HANDLER_ATTRIBUTE.has(attribute_name)) {
+        if (is_undefined_attribute(&attribute)) {
             return true;
         }
+    }
+    return false;
+}
+
+pub fn is_undefined_attribute(attribute: *const Entity) bool {
+    const attribute_name = attribute.definition.attribute.name;
+    if (!constant.attribute.GLOBAL_ATTRIBUTE.has(attribute_name) and !constant.attribute.EVENT_HANDLER_ATTRIBUTE.has(attribute_name)) {
+        return true;
     }
     return false;
 }

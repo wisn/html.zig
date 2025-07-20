@@ -1,5 +1,6 @@
 const std = @import("std");
 const internal = @import("internal");
+const util = internal.util;
 const Entity = internal.entity.Entity;
 const eql = std.mem.eql;
 
@@ -27,7 +28,7 @@ pub fn validate_head(entity: *const Entity) void {
         @compileError("InvalidContentModel: The head element must have at most one base element.");
     }
 
-    if (internal.util.has_undefined_attribute(&element.attributes)) {
+    if (util.has_undefined_attribute(&element.attributes)) {
         @compileError("InvalidContentAttribute: Only global attributes and event handler attributes are supported in the head element.");
     }
 }
@@ -35,7 +36,6 @@ pub fn validate_head(entity: *const Entity) void {
 pub fn validate_title(entity: *const Entity) void {
     const element = entity.definition.element;
     const children = element.chlidren;
-    const error_message = "InvalidContentModel: The title element must only be a sanitized text.";
 
     if (children.len == 0) {
         @compileError("InvalidContentModel: The title element must not be blank.");
@@ -50,10 +50,31 @@ pub fn validate_title(entity: *const Entity) void {
     }
 
     if (children.len != text_element_count) {
-        @compileError(error_message);
+        @compileError("InvalidContentModel: The title element must only be a sanitized text.");
     }
 
-    if (internal.util.has_undefined_attribute(&element.attributes)) {
+    if (util.has_undefined_attribute(&element.attributes)) {
         @compileError("InvalidContentAttribute: Only global attributes and event handler attributes are supported in the title element.");
+    }
+}
+
+pub fn validate_base(entity: *const Entity) void {
+    const element = entity.definition.element;
+    const children = element.chlidren;
+
+    if (children.len > 0) {
+        @compileError("InvalidContentModel: A void element must not have any children.");
+    }
+
+    const supported_attribute = std.StaticStringMap(void).initComptime(.{
+        .{"href"},
+        .{"target"},
+    });
+
+    for (element.attributes) |attribute| {
+        const attribute_name = attribute.definition.attribute.name;
+        if (util.is_undefined_attribute(&attribute) and !supported_attribute.has(attribute_name)) {
+            @compileError("InvalidContentAttribute: The \"" ++ attribute_name ++ "\" attribute is not supported in the base element.");
+        }
     }
 }

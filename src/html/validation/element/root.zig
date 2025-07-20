@@ -15,4 +15,5 @@ const validations = std.StaticStringMap(*const fn (*const Entity) void).initComp
     .{ "html", &document.validate_html },
     .{ "head", &metadata.validate_head },
     .{ "title", &metadata.validate_title },
+    .{ "base", &metadata.validate_base },
 });

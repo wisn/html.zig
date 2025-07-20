@@ -263,7 +263,7 @@ Invalid HTML = compile error!
   - [x] head element validation
   - [ ] meta element validation
   - [x] title element validation
-  - [ ] base element validation
+  - [x] base element validation
   - [ ] link element validation
   - [ ] style element validation
   - [ ] body element validation
