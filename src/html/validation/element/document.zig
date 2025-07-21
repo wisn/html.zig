@@ -2,11 +2,13 @@ const std = @import("std");
 const internal = @import("internal");
 const Entity = internal.entity.Entity;
 const eql = std.mem.eql;
+const InvalidContentAttribute = internal.constant.errors.InvalidContentAttribute;
+const InvalidContentModel = internal.constant.errors.InvalidContentModel;
 
 pub fn validate_html(entity: *const Entity) void {
     const element = entity.definition.element;
     const children = element.chlidren;
-    const error_message = "InvalidContentModel: The html element must have two children, a head element followed by a body element.";
+    const error_message = InvalidContentModel("The html element must have two children, a head element followed by a body element.");
 
     if (children.len != 2) {
         @compileError(error_message);
@@ -20,6 +22,6 @@ pub fn validate_html(entity: *const Entity) void {
     }
 
     if (internal.util.has_undefined_attribute(&element.attributes)) {
-        @compileError("InvalidContentAttribute: Only global attributes and event handler attributes are supported in the html element.");
+        @compileError(InvalidContentAttribute("Only global attributes and event handler attributes are supported in the html element."));
     }
 }

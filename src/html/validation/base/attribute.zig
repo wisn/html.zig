@@ -2,10 +2,12 @@ const std = @import("std");
 const unicode = std.unicode;
 const internal = @import("internal");
 const constant = internal.constant;
+const InvalidAttributeName = constant.errors.InvalidAttributeName;
+const InvalidAttributeValue = constant.errors.InvalidAttributeValue;
 
 pub fn validate_name(name: []const u8) void {
     if (name.len == 0) {
-        @compileError("InvalidAttributeName: must not be empty");
+        @compileError(InvalidAttributeName("It must not be empty."));
     }
 
     const illegal_codepoints = &[_]u21{
@@ -34,7 +36,7 @@ pub fn validate_name(name: []const u8) void {
     }
 
     if (is_illegal) {
-        @compileError("InvalidAttributeName: \"" ++ name ++ "\" contains illegal character");
+        @compileError(InvalidAttributeName("The given name \"" ++ name ++ "\" contains illegal character."));
     }
 }
 
@@ -57,7 +59,7 @@ pub fn validate_value(value: ?[]const u8) void {
                     var buffer: [selection.len]u8 = undefined;
                     const entity = std.ascii.lowerString(&buffer, selection);
                     if (!named_character.has(entity)) {
-                        @compileError("InvalidAttributeValue: \"" ++ entity ++ "\" contains ambiguous ampersand");
+                        @compileError(InvalidAttributeValue("The given value \"" ++ entity ++ "\" contains ambiguous ampersand."));
                     }
                 }
             }

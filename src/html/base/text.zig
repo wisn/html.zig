@@ -2,6 +2,7 @@ const std = @import("std");
 const internal = @import("internal");
 const transformer = @import("transformer");
 const Entity = internal.entity.Entity;
+const InvalidTextArgument = internal.constant.errors.InvalidTextArgument;
 
 pub fn RawText(texts: anytype) Entity {
     const collected_texts = collect_texts(texts);
@@ -58,7 +59,7 @@ fn collect_texts(any: anytype) []const u8 {
             const typename = @typeName(typeof);
 
             if (!(std.mem.startsWith(u8, typename, "*const [") and std.mem.endsWith(u8, typename, ":0]u8"))) {
-                @compileError("InvalidTextArgument: must be string literals");
+                @compileError(InvalidTextArgument("It must be string literals."));
             }
 
             return field ++ append(fields[1..]);
