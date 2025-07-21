@@ -2,6 +2,7 @@ const std = @import("std");
 const internal = @import("internal");
 const document = @import("document.zig");
 const metadata = @import("metadata.zig");
+const section = @import("section.zig");
 const Entity = internal.entity.Entity;
 
 pub fn validate_element(entity: *const Entity) void {
@@ -19,4 +20,15 @@ const validations = std.StaticStringMap(*const fn (*const Entity) void).initComp
     .{ "link", &metadata.validate_link },
     .{ "meta", &metadata.validate_meta },
     .{ "style", &metadata.validate_style },
+    .{ "body", &section.validate_body },
+    .{ "article", &section.basic_section_validation },
+    .{ "section", &section.basic_section_validation },
+    .{ "nav", &section.basic_section_validation },
+    .{ "aside", &section.basic_section_validation },
+    .{ "h1", &section.heading_validation },
+    .{ "h2", &section.heading_validation },
+    .{ "h3", &section.heading_validation },
+    .{ "h4", &section.heading_validation },
+    .{ "h5", &section.heading_validation },
+    .{ "h6", &section.heading_validation },
 });
