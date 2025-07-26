@@ -11,22 +11,23 @@ pub fn Element(name: []const u8) fn (anytype) (fn (anytype) Entity) {
         fn closure(args: anytype) fn (anytype) Entity {
             comptime var has_attributes = true;
             validation.base.element.validate_arguments(args, &has_attributes);
-            const attributes = if (has_attributes) args else .{};
+            const validated_attributes = if (has_attributes) util.fetch_entity_list(args) else util.fetch_entity_list(.{});
+            validation.attribute.validate_attributes(name, &validated_attributes);
 
             return struct {
                 fn compose_children(children: anytype) Entity {
                     validation.base.element.validate_elements(children);
-                    const elements = if (has_attributes) children else args;
+                    const validated_children = if (has_attributes) util.fetch_entity_list(children) else util.fetch_entity_list(args);
+                    validation.element.validate_children(name, &validated_children);
                     const entity = Entity{
                         .definition = .{
                             .element = .{
                                 .name = name,
-                                .attributes = util.fetch_entity_list(attributes),
-                                .chlidren = util.fetch_entity_list(elements),
+                                .attributes = validated_attributes,
+                                .chlidren = validated_children,
                             },
                         },
                     };
-                    validation.element.validate_element(&entity);
 
                     return Entity{
                         .definition = entity.definition,
@@ -47,16 +48,17 @@ pub fn VoidElement(name: []const u8) fn (anytype) Entity {
     return struct {
         fn compose_attributes(attributes: anytype) Entity {
             validation.base.element.validate_attributes(attributes);
+            const validated_attributes = util.fetch_entity_list(attributes);
+            validation.attribute.validate_attributes(name, &validated_attributes);
             const entity = Entity{
                 .definition = .{
                     .element = .{
                         .name = name,
                         .is_void = true,
-                        .attributes = util.fetch_entity_list(attributes),
+                        .attributes = validated_attributes,
                     },
                 },
             };
-            validation.element.validate_element(&entity);
 
             return Entity{
                 .definition = entity.definition,

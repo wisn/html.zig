@@ -32,7 +32,7 @@ pub const GLOBAL_ATTRIBUTE = std.StaticStringMap(void).initComptime(.{
     .{"writingsuggestions"},
 });
 
-pub const EVENT_HANDLER_ATTRIBUTE = std.StaticStringMap(void).initComptime(.{
+pub const GLOBAL_EVENT_HANDLER_ATTRIBUTE = std.StaticStringMap(void).initComptime(.{
     .{"onauxclick"},
     .{"onbeforeinput"},
     .{"onbeforematch"},

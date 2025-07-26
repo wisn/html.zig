@@ -1,30 +1,35 @@
 const std = @import("std");
 const internal = @import("internal");
+const util = internal.util;
+const common = @import("common.zig");
 const document = @import("document.zig");
 const metadata = @import("metadata.zig");
 const section = @import("section.zig");
 const Entity = internal.entity.Entity;
 
-pub fn validate_element(entity: *const Entity) void {
-    const element = entity.definition.element;
-    if (validations.has(element.name)) {
-        validations.get(element.name).?(entity);
+pub fn validate_children(element_name: []const u8, children: *const []const Entity) void {
+    const normalized_name = util.to_lowercase(element_name);
+    const max_branches = children.len * validations.kvs.len * std.math.log2_int_ceil(usize, validations.kvs.len);
+    @setEvalBranchQuota(max_branches);
+
+    if (validations.has(normalized_name)) {
+        validations.get(normalized_name).?(children);
     }
 }
 
-const validations = std.StaticStringMap(*const fn (*const Entity) void).initComptime(.{
+const validations = std.StaticStringMap(*const fn (*const []const Entity) void).initComptime(.{
     .{ "html", &document.validate_html },
     .{ "head", &metadata.validate_head },
     .{ "title", &metadata.validate_title },
-    .{ "base", &metadata.validate_base },
-    .{ "link", &metadata.validate_link },
-    .{ "meta", &metadata.validate_meta },
+    .{ "base", &common.validate_void_element },
+    .{ "link", &common.validate_void_element },
+    .{ "meta", &common.validate_void_element },
     .{ "style", &metadata.validate_style },
-    .{ "body", &section.validate_body },
-    .{ "article", &section.basic_section_validation },
-    .{ "section", &section.basic_section_validation },
-    .{ "nav", &section.basic_section_validation },
-    .{ "aside", &section.basic_section_validation },
+    .{ "body", &common.validate_flow_content },
+    .{ "article", &common.validate_flow_content },
+    .{ "section", &common.validate_flow_content },
+    .{ "nav", &common.validate_flow_content },
+    .{ "aside", &common.validate_flow_content },
     .{ "h1", &section.heading_validation },
     .{ "h2", &section.heading_validation },
     .{ "h3", &section.heading_validation },
