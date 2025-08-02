@@ -32,4 +32,8 @@ const validations = std.StaticStringMap(*const fn (*const []const Entity) void).
     .{ "h4", &common.global_attribute_and_global_event_handler_only },
     .{ "h5", &common.global_attribute_and_global_event_handler_only },
     .{ "h6", &common.global_attribute_and_global_event_handler_only },
+    .{ "hgroup", &common.global_attribute_and_global_event_handler_only },
+    .{ "header", &common.global_attribute_and_global_event_handler_only },
+    .{ "footer", &common.global_attribute_and_global_event_handler_only },
+    .{ "address", &common.global_attribute_and_global_event_handler_only },
 });

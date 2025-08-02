@@ -39,6 +39,10 @@ pub fn validate_title(children: *const []const Entity) void {
     comptime var text_element_count = 0;
 
     for (children.*) |child| {
+        if (child.definition == .comment) {
+            continue;
+        }
+
         if (child.definition == .text and child.definition.text.sanitize) {
             text_element_count += 1;
         }

@@ -36,4 +36,8 @@ const validations = std.StaticStringMap(*const fn (*const []const Entity) void).
     .{ "h4", &section.heading_validation },
     .{ "h5", &section.heading_validation },
     .{ "h6", &section.heading_validation },
+    .{ "hgroup", &section.validate_hgroup },
+    .{ "header", &section.validate_header_or_footer },
+    .{ "footer", &section.validate_header_or_footer },
+    .{ "address", &section.validate_address },
 });

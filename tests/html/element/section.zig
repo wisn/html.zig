@@ -14,7 +14,12 @@ const H3 = html.element.H3;
 const H4 = html.element.H4;
 const H5 = html.element.H5;
 const H6 = html.element.H6;
+const Hgroup = html.element.Hgroup;
+const Header = html.element.Header;
+const Footer = html.element.Footer;
+const Address = html.element.Address;
 const A = html.element.A;
+const P = html.element.P;
 
 test "body element must transform accordingly" {
     const elm = Body(.{})(.{
@@ -59,4 +64,42 @@ test "heading element must transform accordingly" {
         H6(.{Text(.{"world!"})}),
     });
     try testing.expectEqualSlices(u8, "<body><h5>hello!</h5><h6>world!</h6></body>", elm.transform());
+}
+
+test "hgroup element must transform accordingly" {
+    const elm = Hgroup(.{})(.{
+        H1(.{Text(.{"a title"})}),
+        P(.{Text(.{"the content"})}),
+    });
+    const expected = "<hgroup><h1>a title</h1><p>the content</p></hgroup>";
+    try testing.expectEqualSlices(u8, expected, elm.transform());
+}
+
+test "header element must transform accordingly" {
+    const elm = Header(.{})(.{
+        Hgroup(.{
+            H1,
+        }),
+    });
+    const expected = "<header><hgroup><h1></h1></hgroup></header>";
+    try testing.expectEqualSlices(u8, expected, elm.transform());
+}
+
+test "footer element must transform accordingly" {
+    const elm = Footer(.{})(.{
+        A(.{Attribute("href")("/")})(.{
+            Text(.{"Home"}),
+        }),
+    });
+    const expected = "<footer><a href=\"/\">Home</a></footer>";
+    try testing.expectEqualSlices(u8, expected, elm.transform());
+}
+
+test "address element must transform accordingly" {
+    const elm = Address(.{})(.{
+        Text(.{"Contact: "}),
+        A(.{Attribute("href")("mailto:foo@bar.ext")})(.{Text(.{"foo[at]bar.ext"})}),
+    });
+    const expected = "<address>Contact: <a href=\"mailto:foo@bar.ext\">foo[at]bar.ext</a></address>";
+    try testing.expectEqualSlices(u8, expected, elm.transform());
 }
