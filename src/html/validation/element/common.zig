@@ -15,9 +15,22 @@ pub fn validate_flow_content(children: *const []const Entity) void {
             continue;
         }
 
-        const element_name = child.definition.element.name;
-        if (!constant.content.FLOW_CONTENT.has(element_name)) {
-            @compileError(InvalidContentModel("Only flow content is supported as the child element."));
+        const child_name = child.definition.element.name;
+        if (!constant.content.FLOW_CONTENT.has(child_name)) {
+            @compileError(InvalidContentModel("Only flow content is supported as the element descendants."));
+        }
+    }
+}
+
+pub fn validate_phrasing_content(children: *const []const Entity) void {
+    for (children.*) |child| {
+        if (child.definition != .element) {
+            continue;
+        }
+
+        const child_name = child.definition.element.name;
+        if (!constant.content.PHRASING_CONTENT.has(child_name)) {
+            @compileError(InvalidContentModel("Only phrasing content is supported as the element descendants."));
         }
     }
 }

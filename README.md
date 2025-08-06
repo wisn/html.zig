@@ -142,11 +142,11 @@ Invalid HTML = compile error!
   - [x] element name
   - [x] html element validation
   - [x] head element validation
-  - [ ] meta element validation
+  - [x] meta element validation
   - [x] title element validation
   - [x] base element validation
-  - [ ] link element validation
-  - [ ] style element validation
+  - [x] link element validation
+  - [x] style element validation
   - [x] body element validation
   - [x] article element validation
   - [x] section element validation
@@ -158,11 +158,11 @@ Invalid HTML = compile error!
   - [x] h4 element validation
   - [x] h5 element validation
   - [x] h6 element validation
-  - [ ] hgroup element validation
-  - [ ] header element validation
-  - [ ] footer element validation
-  - [ ] address element validation
-  - [ ] p element validation
+  - [x] hgroup element validation
+  - [x] header element validation
+  - [x] footer element validation
+  - [x] address element validation
+  - [x] p element validation
   - [ ] hr element validation
   - [ ] pre element validation
   - [ ] blockquote element validation
