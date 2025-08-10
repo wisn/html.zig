@@ -5,6 +5,7 @@ const common = @import("common.zig");
 const document = @import("document.zig");
 const metadata = @import("metadata.zig");
 const section = @import("section.zig");
+const content = @import("content.zig");
 const Entity = internal.entity.Entity;
 
 pub fn validate_children(element_name: []const u8, children: *const []const Entity) void {
@@ -40,4 +41,20 @@ const validations = std.StaticStringMap(*const fn (*const []const Entity) void).
     .{ "header", &section.validate_header_or_footer },
     .{ "footer", &section.validate_header_or_footer },
     .{ "address", &section.validate_address },
+    .{ "p", &common.validate_phrasing_content },
+    .{ "hr", &common.validate_void_element },
+    .{ "pre", &common.validate_phrasing_content },
+    .{ "blockquote", &common.validate_flow_content },
+    .{ "ol", &content.validate_listing },
+    .{ "ul", &content.validate_listing },
+    .{ "menu", &content.validate_listing },
+    .{ "li", &common.validate_flow_content },
+    .{ "dl", &content.validate_dl },
+    .{ "dt", &content.validate_dt },
+    .{ "dd", &common.validate_flow_content },
+    .{ "figure", &content.validate_figure },
+    .{ "figcaption", &common.validate_flow_content },
+    .{ "main", &common.validate_flow_content },
+    .{ "search", &common.validate_flow_content },
+    // TODO: add div element validation
 });

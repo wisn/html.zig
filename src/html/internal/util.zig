@@ -14,10 +14,9 @@ pub fn fetch_entity(field: anytype) ?Entity {
 }
 
 pub fn fetch_entity_list(any: anytype) []const Entity {
+    // todo: make the value dynamic
+    @setEvalBranchQuota(3000);
     const meta_fields = std.meta.fields(@TypeOf(any));
-    // this doesn't look optimal at all. need to revisit the formula provided
-    const max_branches = meta_fields.len * 1000;
-    @setEvalBranchQuota(max_branches);
 
     return struct {
         fn append(fields: []const std.builtin.Type.StructField) []const Entity {

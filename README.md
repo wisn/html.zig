@@ -142,11 +142,11 @@ Invalid HTML = compile error!
   - [x] element name
   - [x] html element validation
   - [x] head element validation
-  - [ ] meta element validation
+  - [x] meta element validation
   - [x] title element validation
   - [x] base element validation
-  - [ ] link element validation
-  - [ ] style element validation
+  - [x] link element validation
+  - [x] style element validation
   - [x] body element validation
   - [x] article element validation
   - [x] section element validation
@@ -158,25 +158,25 @@ Invalid HTML = compile error!
   - [x] h4 element validation
   - [x] h5 element validation
   - [x] h6 element validation
-  - [ ] hgroup element validation
-  - [ ] header element validation
-  - [ ] footer element validation
-  - [ ] address element validation
-  - [ ] p element validation
-  - [ ] hr element validation
-  - [ ] pre element validation
-  - [ ] blockquote element validation
-  - [ ] ol element validation
-  - [ ] ul element validation
-  - [ ] menu element validation
-  - [ ] li element validation
-  - [ ] dl element validation
-  - [ ] dt element validation
-  - [ ] dd element validation
-  - [ ] figure element validation
-  - [ ] figcaption element validation
-  - [ ] main element validation
-  - [ ] search element validation
+  - [x] hgroup element validation
+  - [x] header element validation
+  - [x] footer element validation
+  - [x] address element validation
+  - [x] p element validation
+  - [x] hr element validation
+  - [x] pre element validation
+  - [x] blockquote element validation
+  - [x] ol element validation
+  - [x] ul element validation
+  - [x] menu element validation
+  - [x] li element validation
+  - [x] dl element validation
+  - [x] dt element validation
+  - [x] dd element validation
+  - [x] figure element validation
+  - [x] figcaption element validation
+  - [x] main element validation
+  - [x] search element validation
   - [ ] div element validation
   - [ ] a element validation
   - [ ] em element validation
