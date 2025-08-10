@@ -163,20 +163,20 @@ Invalid HTML = compile error!
   - [x] footer element validation
   - [x] address element validation
   - [x] p element validation
-  - [ ] hr element validation
-  - [ ] pre element validation
-  - [ ] blockquote element validation
-  - [ ] ol element validation
-  - [ ] ul element validation
-  - [ ] menu element validation
-  - [ ] li element validation
-  - [ ] dl element validation
-  - [ ] dt element validation
-  - [ ] dd element validation
-  - [ ] figure element validation
-  - [ ] figcaption element validation
-  - [ ] main element validation
-  - [ ] search element validation
+  - [x] hr element validation
+  - [x] pre element validation
+  - [x] blockquote element validation
+  - [x] ol element validation
+  - [x] ul element validation
+  - [x] menu element validation
+  - [x] li element validation
+  - [x] dl element validation
+  - [x] dt element validation
+  - [x] dd element validation
+  - [x] figure element validation
+  - [x] figcaption element validation
+  - [x] main element validation
+  - [x] search element validation
   - [ ] div element validation
   - [ ] a element validation
   - [ ] em element validation
