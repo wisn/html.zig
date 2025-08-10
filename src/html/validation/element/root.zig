@@ -50,11 +50,11 @@ const validations = std.StaticStringMap(*const fn (*const []const Entity) void).
     .{ "menu", &content.validate_listing },
     .{ "li", &common.validate_flow_content },
     .{ "dl", &content.validate_dl },
-    // validate dt descendants
+    .{ "dt", &content.validate_dt },
     .{ "dd", &common.validate_flow_content },
-    // validate figure descendants
+    .{ "figure", &content.validate_figure },
     .{ "figcaption", &common.validate_flow_content },
     .{ "main", &common.validate_flow_content },
     .{ "search", &common.validate_flow_content },
-    // validate div descendants
+    // TODO: add div element validation
 });

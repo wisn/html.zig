@@ -15,7 +15,7 @@ pub fn fetch_entity(field: anytype) ?Entity {
 
 pub fn fetch_entity_list(any: anytype) []const Entity {
     // todo: make the value dynamic
-    @setEvalBranchQuota(2000);
+    @setEvalBranchQuota(3000);
     const meta_fields = std.meta.fields(@TypeOf(any));
 
     return struct {

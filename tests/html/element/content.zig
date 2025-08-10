@@ -14,11 +14,12 @@ const Li = html.element.Li;
 const Dl = html.element.Dl;
 const Dt = html.element.Dt;
 const Dd = html.element.Dd;
+const Figure = html.element.Figure;
 const FigCaption = html.element.FigCaption;
 const Main = html.element.Main;
 const Search = html.element.Search;
-const B = html.element.B;
 const Div = html.element.Div;
+const B = html.element.B;
 
 test "p element must transform accordingly" {
     const elm = P(.{})(.{
@@ -77,7 +78,13 @@ test "menu element must transform accordingly" {
     try testing.expectEqualSlices(u8, expected, elm.transform());
 }
 
-// test li element
+test "li element must transform accordingly" {
+    const elm = Ol(.{})(.{
+        Li(.{Attribute("value")("1")}),
+    });
+    const expected = "<ol><li value=\"1\"></li></ol>";
+    try testing.expectEqualSlices(u8, expected, elm.transform());
+}
 
 test "dl element must transform accordingly" {
     const elm1 = Dl(.{})(.{
@@ -99,7 +106,13 @@ test "dl element must transform accordingly" {
     try testing.expectEqualSlices(u8, expected2, elm2.transform());
 }
 
-// test dt element
+test "dt element must transform accordingly" {
+    const elm = Dt(.{})(.{
+        Text(.{"A duck."}),
+    });
+    const expected = "<dt>A duck.</dt>";
+    try testing.expectEqualSlices(u8, expected, elm.transform());
+}
 
 test "dd element must transform accordingly" {
     const elm = Dd(.{Attribute("class")("pronunciation")})(.{
@@ -109,7 +122,14 @@ test "dd element must transform accordingly" {
     try testing.expectEqualSlices(u8, expected, elm.transform());
 }
 
-// test figure element
+test "figure element must transform accordingly" {
+    const elm = Figure(.{})(.{
+        FigCaption(.{Text(.{"foo"})}),
+        P(.{Text(.{"bar"})}),
+    });
+    const expected = "<figure><figcaption>foo</figcaption><p>bar</p></figure>";
+    try testing.expectEqualSlices(u8, expected, elm.transform());
+}
 
 test "figcaption element must transform accordingly" {
     const elm = FigCaption(.{})(.{
@@ -135,4 +155,10 @@ test "search element must transform accordingly" {
     try testing.expectEqualSlices(u8, expected, elm.transform());
 }
 
-// test div element
+test "div element must transform accordingly" {
+    const elm = Div(.{})(.{
+        P(.{Text(.{"yeah what"})}),
+    });
+    const expected = "<div><p>yeah what</p></div>";
+    try testing.expectEqualSlices(u8, expected, elm.transform());
+}

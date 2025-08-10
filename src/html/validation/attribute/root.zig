@@ -44,7 +44,7 @@ const validations = std.StaticStringMap(*const fn (*const []const Entity) void).
     .{ "ol", &content.validate_ol },
     .{ "ul", &common.global_attribute_and_global_event_handler_only },
     .{ "menu", &common.global_attribute_and_global_event_handler_only },
-    // validate li attributes
+    .{ "li", &content.validate_li },
     .{ "dl", &common.global_attribute_and_global_event_handler_only },
     .{ "dt", &common.global_attribute_and_global_event_handler_only },
     .{ "dd", &common.global_attribute_and_global_event_handler_only },
